@@ -13,7 +13,7 @@
         Library
     </div>
     <div class="body">
-        <button class="new-book">New Book</button>
+        <button type="button" class="new-book">New Book</button>
         <div class="main">
     
         </div>
@@ -21,19 +21,19 @@
 
 
     <div class="add-form">
-        <form class="form" action="POST">
+        <form id="form" class="form" action="POST">
             <p>Add Book</p> 
-            <input placeholder="Name" id="name" type="text" required>
-            <input placeholder="Author" id="author" type="text" required>
-            <input placeholder="Pages" id="pages" type="number" min="0" required>
+            <input name='name' placeholder="Name" id="name" type="text" required>
+            <input name='author' placeholder="Author" id="author" type="text" required>
+            <input name='pages' placeholder="Pages" id="pages" type="number" min="0" required>
             <div class="read-book">
                 <label for="read">Read?</label>
                 <input type="checkbox" id="read">
             </div>
             
             <div class="buttons">
-                <button id="cancel">Cancel</button>
-                <button id="add-book" type="submit">Submit</button>
+                <button type="button" id="cancel">Cancel</button>
+                <button for="form" id="add-book" type="submit">Submit</button>
             </div>
             
         </form>
