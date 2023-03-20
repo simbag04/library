@@ -1,0 +1,156 @@
+body
+{
+    margin: 0;
+    height: 100vh; 
+}
+
+.header
+{
+    padding: 40px;
+    background-color: #385E72;
+    font-size: 40px;
+    color: white;
+}
+
+.body
+{
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: 0px 50px;
+    background-color: #D9E4EC;
+    padding-bottom: 20px;
+}
+
+.main
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-rows: repeat(auto-fill, max(300px));
+    height: 100vh;
+    grid-auto-flow: row;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.info-card
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;  
+    background-color: #6AABD2;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    
+}
+
+.info-card-text
+{
+    font-size: 20px;
+}
+
+.info-card-button, #add-book, #cancel
+{
+    width: 100%;   
+    padding: 10px;
+    font-size: 14px;
+    background-color: #B7CFDC;
+    border: none;
+    border-radius: 10px;
+         
+
+}
+
+.new-book
+{
+    align-self: center;
+    justify-self: center;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    margin: 20px;
+    background-color: #385E72;
+    color: white;
+}
+
+button:hover
+{
+    box-shadow: 0px 0px 4px black;
+}
+
+
+.add-form
+{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    gap: 10px;
+    visibility: hidden;
+}
+
+.form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    background-color: #6AABD2;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.form p
+{
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.read-book
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 18px;
+    gap: 5px;
+}
+
+input[type='checkbox']
+{
+    width: 1.2em;
+    height: 1.2em;
+}
+
+#read:checked
+{
+    accent-color: #B7CFDC;
+}
+
+.form input
+{
+     
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    /*border: 2px solid black;*/
+    border-radius: 10px;
+
+}
+
+.buttons
+{
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+#add-book, #cancel
+{
+    flex: 1;
+}
