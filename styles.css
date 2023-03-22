@@ -89,6 +89,7 @@ button:hover
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
     gap: 10px;
+    visibility: hidden;
 
 }
 
@@ -101,7 +102,7 @@ button:hover
     background-color: #6AABD2;
     padding: 20px;
     border-radius: 10px;
-    opacity: 0;
+
 }
 
 .form p

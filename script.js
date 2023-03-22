@@ -3,6 +3,7 @@ let library = [];
 // DOM elements
 const main = document.querySelector('.main');
 const form = document.querySelector(".form");
+const formDiv = document.querySelector('.add-form')
 const body = document.querySelector(".body");
 const newBookButton = document.querySelector(".new-book");
 const cancelButton = document.querySelector("#cancel");
@@ -118,7 +119,7 @@ form.addEventListener('submit', (e) => {
     new_book.addBookToLibrary();
 
     // reset style
-    form.style['opacity'] = "0";
+    formDiv.style['visibility'] = "hidden";
     body.style['opacity'] = "100%";
 
     // display book
@@ -127,10 +128,10 @@ form.addEventListener('submit', (e) => {
 
 newBookButton.addEventListener('click', () => {
     body.style['opacity'] = "50%";
-    form.style['opacity'] = "1";
+    formDiv.style['visibility'] = "visible";
 })
 
 cancelButton.addEventListener('click', () =>{
     body.style['opacity'] = "100%";
-    form.style['opacity'] = "0";
+    formDiv.style['visibility'] = "hidden";
 })
