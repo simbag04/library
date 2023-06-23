@@ -10,9 +10,12 @@
 <body>
     <script src="script.js" defer></script>
     <div class="header">
-        <div>Library</div>
-        <div id="user-info"></div>
-        <button type="button" id="sign-in">Sign in</button>
+        <div class="title">Library</div>
+        <div id="account-info">
+            <span id="user-info"></span>
+            <button type="button" id="sign-in">Sign in</button>
+        </div>
+        
     </div>
     <div class="body">
         <button type="button" class="new-book">New Book</button>
@@ -40,6 +43,20 @@
             
         </form>
     </div>
-<script src="firebase.js" type="module"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCKMyRRIBXNIG7ZWvgS1BamnMaZn006yMY",
+        authDomain: "library-a0799.firebaseapp.com",
+        projectId: "library-a0799",
+        storageBucket: "library-a0799.appspot.com",
+        messagingSenderId: "361604445102",
+        appId: "1:361604445102:web:8aaa4ab9090e2a015a8e3f"
+    }
+
+    firebase.initializeApp(firebaseConfig);
+</script>
 </body>
 </html>

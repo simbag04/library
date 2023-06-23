@@ -1,15 +1,30 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js'
 import {
     getAuth,
-    onAuthStateChanged,
     GoogleAuthProvider,
     signInWithPopup,
     signOut,
     setPersistence,
     browserSessionPersistence,
-    signInWithRedirect
   } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js'
 
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    where,
+    getDocs,
+    orderBy,
+    limit,
+    onSnapshot,
+    setDoc,
+    updateDoc,
+    doc,
+    serverTimestamp,
+  } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js'
+
+import Book from './script.js'
 const signInButton = document.querySelector("#sign-in");
 const userInfoDiv = document.querySelector("#user-info");
 
@@ -28,13 +43,14 @@ initializeApp(firebaseConfig);
 
 signInButton.addEventListener('click', async () => {
     if (!getAuth().currentUser) {
-        setPersistence(auth, browserSessionPersistence)
+        setPersistence(getAuth(), browserSessionPersistence)
             .then(async () => {
                 const provider = new GoogleAuthProvider();
                 await signInWithPopup(getAuth(), provider);
                 signInButton.textContent = "Sign Out";
                 signedIn = true;
                 userInfoDiv.textContent = getAuth().currentUser.displayName; 
+                getUsersBooks(getAuth().currentUser.email);
             })
             .catch((error) => {
                 alert(error.message);
@@ -48,4 +64,39 @@ signInButton.addEventListener('click', async () => {
     }
 })
 
-const auth = getAuth();
+async function addBook(book) {
+    if (getAuth().currentUser) {
+        try {
+            await addDoc(collection(getFirestore(), 'books'), {
+                user: getAuth().currentUser.email,
+                name: book.name,
+                author: book.author,
+                pages: book.pages,
+                read: book.read
+            });
+        }
+        catch (error) {
+            console.log(error.message)
+        }
+    }
+}
+
+async function getUsersBooks(userEmail) {
+    const q = query(collection(getFirestore(), 'books'), where("user", "==", userEmail));
+    const res = await getDocs(q);
+
+    let books = res.docs.map((book) => ({
+        name: book.data().name, 
+        author: book.data().author, 
+        pages: book.data().pages, 
+        read: book.data().read
+    }))
+
+    console.log(res.docs);
+    console.log(books);
+    res.forEach((book) => {
+        console.log(book.data());
+    })
+}
+
+export {addBook};

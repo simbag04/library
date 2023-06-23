@@ -26,6 +26,12 @@ Book.prototype.addBookToLibrary = function ()
     library[library.length] = this;
 }
 
+function displayAllBooks(books) {
+    library = [...books];
+    main.innerHTML = "";
+    library.map((book) => displayBook(book));
+}
+
 function displayBook(book)
 {
     // create new card
@@ -72,7 +78,8 @@ function displayBook(book)
         let text = book.read === true ? "Read" : "Not Read";
         let background = book.read === true ? "#9BC53D" : "#C3423F";
         readButton.style['background-color'] = background; 
-        readButton.textContent = text;      
+        readButton.textContent = text;  
+        toggleRead(book.name, book.read);    
     })
 
     // remove button
@@ -88,6 +95,7 @@ function displayBook(book)
         let index = classes[1];
         library[index] = null;
         remove.parentElement.remove();
+        removeBook(book.name);
     })
 
     // append elements to DOM
@@ -117,6 +125,8 @@ form.addEventListener('submit', (e) => {
     // add to library
     const new_book = new Book(name, author, pages, read);
     new_book.addBookToLibrary();
+    addBook(new_book)
+    
 
     // reset style
     formDiv.style['visibility'] = "hidden";
@@ -135,3 +145,82 @@ cancelButton.addEventListener('click', () =>{
     body.style['opacity'] = "100%";
     formDiv.style['visibility'] = "hidden";
 })
+
+const signInButton = document.querySelector("#sign-in");
+const userInfoDiv = document.querySelector("#user-info");
+
+signInButton.addEventListener('click', async () => {
+    if (!firebase.auth().currentUser) {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        await firebase.auth().signInWithPopup(provider);
+        signInButton.textContent = "Sign Out";
+        signedIn = true;
+        userInfoDiv.textContent = firebase.auth().currentUser.displayName;  
+        displayAllBooks(await getUsersBooks(firebase.auth().currentUser.email));
+    } else {
+        signedIn = false;
+        firebase.auth().signOut();
+        userInfoDiv.textContent = "";
+        signInButton.textContent = "Sign in"
+        displayAllBooks([])
+    }
+})
+
+async function addBook(book) {
+    if (firebase.auth().currentUser) {
+        try {
+            await firebase.firestore().collection('books').add({
+                user: firebase.auth().currentUser.email,
+                name: book.name,
+                author: book.author,
+                pages: book.pages,
+                read: book.read
+            });
+        }
+        catch (error) {
+            console.log(error.message)
+        }
+    }
+}
+
+async function getUsersBooks(userEmail) {
+    const q = await firebase.firestore().collection('books').where("user", "==", userEmail).get();
+
+    let books = q.docs.map((book) => (new Book(
+        book.data().name, 
+        book.data().author, 
+        book.data().pages, 
+        book.data().read
+    )))
+    return books;
+}
+
+async function getBookId(userEmail, title) {
+    const q = await firebase.firestore()
+                            .collection('books')
+                            .where("user", "==", userEmail) 
+                            .get();
+
+
+    let ids = q.docs.filter((book) => book.data().name == title);
+    return ids.map((book) => book.id);
+}
+
+async function removeBook(title) {
+    if (firebase.auth().currentUser) {
+        let ids = await getBookId(firebase.auth().currentUser.email, title);
+        ids.map((id) => {
+            firebase.firestore().collection('books').doc(id).delete();
+        })
+    }
+}
+
+async function toggleRead(title, newStatus) {
+    if (firebase.auth().currentUser) {
+        let ids = await getBookId(firebase.auth().currentUser.email, title);
+        ids.map((id) => {
+            firebase.firestore().collection('books').doc(id).update({read: newStatus})
+        })
+    }
+}
+
