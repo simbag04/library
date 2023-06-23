@@ -67,8 +67,7 @@ body
 }
 
 .info-card-button, #add-book, #cancel, #sign-in
-{
-    width: 100%;   
+{  
     padding: 10px;
     font-size: 14px;
     background-color: #B7CFDC;
